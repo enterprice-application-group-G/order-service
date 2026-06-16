@@ -1,2 +1,3 @@
 ﻿- chore(order): initial spring boot setup
 - feat(order): implement order service logic and tests
+- ci(order): add github actions workflow with sonarcloud
