@@ -1,1 +1,2 @@
 ﻿- chore(order): initial spring boot setup
+- feat(order): implement order service logic and tests
