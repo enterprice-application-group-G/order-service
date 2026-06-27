@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "orders")
@@ -13,7 +12,6 @@ public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long orderId;
 
     @NotNull(message = "Customer ID is required")
@@ -22,20 +20,16 @@ public class OrderEntity {
     @NotNull(message = "Product ID is required")
     private Long productId;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private String productName;
 
     @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private BigDecimal totalPrice;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime orderDate;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private String status;
 
     // Getters and setters
