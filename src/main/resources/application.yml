@@ -1,6 +1,9 @@
 ﻿server:
   port: 8082
 
+# Temporary non-functional comment1
+# Temporary non-functional comment2
+# Temporary non-functional comment3
 spring:
   application:
     name: order-service
