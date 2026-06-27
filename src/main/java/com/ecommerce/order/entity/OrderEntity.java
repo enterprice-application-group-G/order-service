@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "orders")
 public class OrderEntity {
 
+    // Primary key for the order
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
