@@ -1,9 +1,6 @@
 ﻿server:
   port: 8082
 
-# Temporary non-functional comment1
-# Temporary non-functional comment2
-# Temporary non-functional comment3
 spring:
   application:
     name: order-service
@@ -13,9 +10,6 @@ spring:
     password: ${DB_PASSWORD:order_password}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   rabbitmq:
