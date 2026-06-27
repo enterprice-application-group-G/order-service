@@ -1,6 +1,7 @@
 ﻿server:
   port: 8082
 
+# Temporary non-functional change to trigger CI/Sonar PR analysis.
 spring:
   application:
     name: order-service
