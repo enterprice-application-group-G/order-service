@@ -4,6 +4,7 @@ import com.ecommerce.order.config.AppConfig;
 import com.ecommerce.order.dto.OrderMessage;
 import com.ecommerce.order.dto.ProductResponse;
 import com.ecommerce.order.entity.OrderEntity;
+import com.ecommerce.order.exception.OrderNotFoundException;
 import com.ecommerce.order.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -74,5 +76,14 @@ public class OrderService {
         logger.info("Order message published to RabbitMQ for Order ID: {}", savedOrder.getOrderId());
 
         return savedOrder;
+    }
+
+    public List<OrderEntity> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    public OrderEntity getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
     }
 }

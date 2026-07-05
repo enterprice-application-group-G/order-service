@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/orders")
 @Tag(name = "Order API", description = "Order management operations")
@@ -25,5 +27,17 @@ public class OrderController {
     public ResponseEntity<OrderEntity> createOrder(@Valid @RequestBody OrderEntity order) {
         OrderEntity createdOrder = orderService.createOrder(order);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @Operation(summary = "Get all orders")
+    public ResponseEntity<List<OrderEntity>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
+    @GetMapping("/{orderId}")
+    @Operation(summary = "Get an order by ID")
+    public ResponseEntity<OrderEntity> getOrderById(@PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 }

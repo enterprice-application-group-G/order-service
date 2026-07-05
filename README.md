@@ -17,6 +17,11 @@ The Order Service is a microservice responsible for orchestrating the e-commerce
   - Calculates the total order price.
   - Saves the order record.
   - Dispatches an `OrderMessage` to the RabbitMQ `order_queue`.
+* **List Orders**: `GET /orders`
+  - Returns all stored orders.
+* **Get Order By ID**: `GET /orders/{orderId}`
+  - Returns one order by ID.
+  - Returns `404 Not Found` when the order does not exist.
 
 ## Running Locally
 

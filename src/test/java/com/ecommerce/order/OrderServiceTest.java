@@ -4,6 +4,7 @@ import com.ecommerce.order.config.AppConfig;
 import com.ecommerce.order.dto.OrderMessage;
 import com.ecommerce.order.dto.ProductResponse;
 import com.ecommerce.order.entity.OrderEntity;
+import com.ecommerce.order.exception.OrderNotFoundException;
 import com.ecommerce.order.repository.OrderRepository;
 import com.ecommerce.order.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -90,5 +93,49 @@ public class OrderServiceTest {
 
         verify(orderRepository, never()).save(any(OrderEntity.class));
         verify(rabbitTemplate, never()).convertAndSend(anyString(), any(OrderMessage.class));
+    }
+
+    @Test
+    void getAllOrders_ShouldReturnOrders() {
+        OrderEntity firstOrder = new OrderEntity();
+        firstOrder.setOrderId(100L);
+
+        OrderEntity secondOrder = new OrderEntity();
+        secondOrder.setOrderId(101L);
+
+        when(orderRepository.findAll()).thenReturn(List.of(firstOrder, secondOrder));
+
+        List<OrderEntity> result = orderService.getAllOrders();
+
+        assertEquals(2, result.size());
+        assertEquals(100L, result.get(0).getOrderId());
+        assertEquals(101L, result.get(1).getOrderId());
+        verify(orderRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getOrderById_ShouldReturnOrder_WhenOrderExists() {
+        OrderEntity savedOrder = new OrderEntity();
+        savedOrder.setOrderId(100L);
+        savedOrder.setProductName("Laptop");
+
+        when(orderRepository.findById(100L)).thenReturn(Optional.of(savedOrder));
+
+        OrderEntity result = orderService.getOrderById(100L);
+
+        assertEquals(100L, result.getOrderId());
+        assertEquals("Laptop", result.getProductName());
+        verify(orderRepository, times(1)).findById(100L);
+    }
+
+    @Test
+    void getOrderById_ShouldThrowException_WhenOrderDoesNotExist() {
+        when(orderRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(OrderNotFoundException.class, () -> {
+            orderService.getOrderById(999L);
+        });
+
+        verify(orderRepository, times(1)).findById(999L);
     }
 }
